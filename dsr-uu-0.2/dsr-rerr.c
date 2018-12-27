@@ -216,16 +216,11 @@ int NSCLASS dsr_rerr_opt_recv(struct dsr_pkt *dp, struct dsr_rerr_opt *rerr_opt)
 	case NODE_UNREACHABLE:
 		err_src.s_addr = rerr_opt->err_src;
 		err_dst.s_addr = rerr_opt->err_dst;
-
-		memcpy(&unr_addr, rerr_opt->info, sizeof(struct in_addr));
-
 		DEBUG("NODE_UNREACHABLE err_src=%s err_dst=%s unr=%s\n",
 		      print_ip(err_src), print_ip(err_dst), print_ip(unr_addr));
-
 		/* For now we drop all unacked packets... should probably
 		 * salvage */
 		maint_buf_del_all(err_dst);
-
 		/* Remove broken link from cache */
 		lc_link_del(err_src, unr_addr);
 
